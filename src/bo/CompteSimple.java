@@ -5,8 +5,8 @@ import exceptions.DecouvertDepasseException;
 public class CompteSimple extends Compte{
 	private double decouvert;
 	
-	public CompteSimple(int identifiant, double solde, double decouvert, int id_agence) {
-		super(identifiant, solde, id_agence);
+	public CompteSimple(int indentifiant, double solde, double decouvert, int id_agence) {
+		super(indentifiant, solde, id_agence);
 		this.decouvert = decouvert;
 	}
 
