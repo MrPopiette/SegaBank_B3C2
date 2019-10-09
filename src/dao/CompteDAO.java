@@ -42,7 +42,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 					ps.setDouble( 3, 0 );
 				
 				ps.setString( 4, compte.getClass().getName() );
-				ps.setInt( 5, compte.getAgence().getId() );
+				ps.setInt( 5, compte.getAgence() );
 				
 				if(compte.getClass().toString().equals("CompteSimple"))
 					ps.setDouble( 6, ((CompteSimple) compte).getDecouvert() );
@@ -75,7 +75,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 					ps.setDouble( 2, 0 );
 								
 				ps.setString( 3, compte.getClass().getName() );
-				ps.setInt( 4, compte.getAgence().getId() );
+				ps.setInt( 4, compte.getAgence() );
 				
 				if(compte.getClass().toString().equals("CompteSimple"))
 					ps.setDouble( 5, ((CompteSimple) compte).getDecouvert() );
