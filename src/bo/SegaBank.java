@@ -96,24 +96,4 @@ public class SegaBank {
 			}
 		}while(run == true);
 	}
-
-	public static Agence ajoutAgence() {
-		System.out.println( " - AJOUT D'UNE NOUVELLE AGENCE - " );
-		System.out.println( "Entrer un ID : " );
-		int id = sc.nextInt();
-		System.out.println( "Entrer le code de l'agence : " );
-		String code = sc.next();
-		System.out.println( "Entrer l'adresse de l'agence : " );
-		System.out.println( "	Nom de la rue : " );
-		String addrRue = sc.next();
-		System.out.println( "	Numéro dans la rue : " );
-		String addrNum = sc.next();
-		System.out.println( "	Code postal : " );
-		String addrCPostal = sc.next();
-		System.out.println( "	Ville : " );
-		String addrVille = sc.next();
-		Adresse adresse = new Adresse(addrNum, addrRue, addrVille, addrCPostal);
-		Agence agence = new Agence(code, id, adresse);
-		return agence;
-	}
 }
