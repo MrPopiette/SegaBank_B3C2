@@ -34,6 +34,12 @@ public class Agence {
 	public String toString() {
 		return "Agence [code=" + code + ", id=" + id + ", adresse=" + adresse + ", comptes=" + comptes + "]";
 	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
+	}
 	public List<Compte> getCompte() {
 		return comptes;
 	}

@@ -1,6 +1,13 @@
 package bo;
 
 public class Adresse {
+	@Override
+	public String toString() {
+		return "Adresse [numero=" + numero + ", intutile=" + intutile + ", nameVille=" + nameVille + ", codepostal="
+				+ codepostal + "]";
+	}
+
+
 	private String numero;
 	private String intutile;
 	private String nameVille;
@@ -33,7 +40,5 @@ public class Adresse {
 	public String getCodepostal() {
 		return codepostal;
 	}
-	
-	
 
 }
