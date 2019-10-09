@@ -36,15 +36,15 @@ public class CompteDAO implements IDAO<Long, Compte>{
 				ps.setInt( 1, compte.getIdentifiant() );
 				ps.setDouble( 2, compte.getSolde() );
 				
-				if(compte.getClass().toString().equals("CompteEpargne"))
+				if(compte.getClass().getSimpleName().toString().equals("CompteEpargne"))
 					ps.setDouble( 3, ((CompteEpargne) compte).getTauxInteret() );
 				else
 					ps.setDouble( 3, 0 );
 				
-				ps.setString( 4, compte.getClass().getName() );
+				ps.setString( 4, compte.getClass().getSimpleName() );
 				ps.setInt( 5, compte.getAgence() );
 				
-				if(compte.getClass().toString().equals("CompteSimple"))
+				if(compte.getClass().getSimpleName().toString().equals("CompteSimple"))
 					ps.setDouble( 6, ((CompteSimple) compte).getDecouvert() );
 				else
 					ps.setDouble( 6, 0 );
@@ -74,7 +74,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 				else
 					ps.setDouble( 2, 0 );
 								
-				ps.setString( 3, compte.getClass().getName() );
+				ps.setString( 3, compte.getClass().getSimpleName() );
 				ps.setInt( 4, compte.getAgence());
 				
 				if(compte.getClass().toString().equals("CompteSimple"))
@@ -117,7 +117,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 						else if(rs.getString( "type_compte" ).equals("CompteEpargne"))
 							compte=new CompteEpargne(rs.getInt( "identifiant" ), rs.getDouble("solde"), rs.getDouble("taux_interet"), rs.getInt("id_agence"));
 						else if(rs.getString( "type_compte" ).equals("CompteSimple"))
-							compte=new CompteSimple(rs.getInt( "identifiant" ), rs.getDouble("solde"), rs.getDouble("decouvert"), rs.getInt("id_agence"));
+							compte=new CompteSimple(rs.getInt( "identifiant" ), rs.getDouble("solde"), rs.getDouble("decouvert_max"), rs.getInt("id_agence"));
 						else
 							throw new TypeCompteInvalidException("/!\\ \t --- Warning : Type de compte invalid --- \t /!\\\\");
 					}
@@ -143,7 +143,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 						else if(rs.getString( "type_compte" ).equals("CompteEpargne"))
 							compte=new CompteEpargne(rs.getInt( "identifiant" ), rs.getDouble("solde"), rs.getDouble("taux_interet"), rs.getInt("id_agence"));
 						else if(rs.getString( "type_compte" ).equals("CompteSimple"))
-							compte=new CompteSimple(rs.getInt( "identifiant" ), rs.getDouble("solde"), rs.getDouble("decouvert"), rs.getInt("id_agence"));
+							compte=new CompteSimple(rs.getInt( "identifiant" ), rs.getDouble("solde"), rs.getDouble("decouvert_max"), rs.getInt("id_agence"));
 						else
 							throw new TypeCompteInvalidException("/!\\ \t --- Warning : Type de compte invalid --- \t /!\\\\");
 						

@@ -9,6 +9,10 @@ public class CompteEpargne extends Compte{
 		super(identifiant, solde, id_agence);
 		this.tauxInteret = tauxInteret;
 	}
+	public CompteEpargne( double solde, double tauxInteret, int id_agence) {
+		super( solde, id_agence);
+		this.tauxInteret = tauxInteret;
+	}
 
 	public double getTauxInteret() {
 		return tauxInteret;
@@ -20,8 +24,8 @@ public class CompteEpargne extends Compte{
 	
 	@Override
 	public String toString() {
-		return "CompteEpargne [tauxInteret=" + tauxInteret + ", indentifiant=" + identifiant + ", solde=" + solde
-				+ "]";
+		return "CompteEpargne [tauxInteret=" + tauxInteret + ", identifiant=" + identifiant + ", solde=" + solde
+				+ ", id_agence=" + id_agence + "]";
 	}
 
 }

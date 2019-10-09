@@ -22,10 +22,17 @@ public class Agence {
 
 	private List<Compte> comptes;
 	
-	public Agence(String code, int id, Adresse adresse) {
+	public Agence(String code, Adresse adresse) {
 		super();
 		comptes=new ArrayList<>();
-		this.id = id;
+		this.code = code;
+		this.adresse = adresse;
+	}
+	
+	public Agence(String code,int id,Adresse adresse) {
+		super();
+		this.id=id;
+		comptes=new ArrayList<>();
 		this.code = code;
 		this.adresse = adresse;
 	}

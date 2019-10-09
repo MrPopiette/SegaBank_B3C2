@@ -1,5 +1,7 @@
 package tools;
 
+import bo.Agence;
+
 public class ConsoleMessageCRUD {
 
 	public ConsoleMessageCRUD() {
@@ -23,6 +25,17 @@ public class ConsoleMessageCRUD {
 		System.out.println( "10 - Sauvegarder l'etat des comptes" );
 		System.out.println( "11 - Quitter" );
 		System.out.print( "\t\tEntrez votre choix : " );
+	}
+	
+	public static void menuCRUDModifierAgence(Agence agence) {
+		System.out.println("Information sur l'agence : " + agence.toString());
+		System.out.println("Choisir la ligne a modifier");
+		System.out.println("\t 1 - code");
+		System.out.println("\t 2 - numero_adresse");
+		System.out.println("\t 3 - adresse");
+		System.out.println("\t 4 - code_postal");
+		System.out.println("\t 5 - ville");
+		System.out.println("\t 6 - sauvegarder");
 	}
 	
 	

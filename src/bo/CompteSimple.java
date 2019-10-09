@@ -9,6 +9,10 @@ public class CompteSimple extends Compte{
 		super(identifiant, solde, id_agence);
 		this.decouvert = decouvert;
 	}
+	public CompteSimple( double solde, double decouvert, int id_agence) {
+		super(solde, id_agence);
+		this.decouvert = decouvert;
+	}
 
 	@Override
 	public void retrait(double montant) throws DecouvertDepasseException {
@@ -19,7 +23,8 @@ public class CompteSimple extends Compte{
 
 	@Override
 	public String toString() {
-		return "CompteSimple [decouvert=" + decouvert + ", indentifiant=" + identifiant + ", solde=" + solde + "]";
+		return "CompteSimple [decouvert=" + decouvert + ", identifiant=" + identifiant + ", solde=" + solde
+				+ ", id_agence=" + id_agence + "]";
 	}
 
 	public double getDecouvert() {

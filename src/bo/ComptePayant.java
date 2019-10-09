@@ -9,6 +9,10 @@ public class ComptePayant extends Compte{
 		super(identifiant, solde, id_agence);
 		// TODO Auto-generated constructor stub
 	}
+	public ComptePayant( double solde, int id_agence) {
+		super( solde, id_agence);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public void versement(double montant) {

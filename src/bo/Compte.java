@@ -13,6 +13,10 @@ public abstract class Compte {
 		this.identifiant = identifiant;
 		this.solde = solde;
 	}
+	public Compte(double solde, int id_agence) {
+		this.id_agence=id_agence;
+		this.solde = solde;
+	}
 
 	public int getIdentifiant() {
 		return identifiant;
@@ -42,7 +46,7 @@ public abstract class Compte {
 	
 	@Override
 	public String toString() {
-		return "Compte [indentifiant=" + identifiant + ", solde=" + solde + "]";
+		return "Compte [identifiant=" + identifiant + ", solde=" + solde + ", id_agence=" + id_agence + "]";
 	}
 	
 	
