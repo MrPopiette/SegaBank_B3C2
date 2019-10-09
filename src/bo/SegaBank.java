@@ -10,7 +10,29 @@ import tools.ConsoleMessageCRUD;
 public class SegaBank {
 	
 	private static List<Agence> agences=new ArrayList<>();
-	private static Scanner sc = new Scanner( System.in );
+	private static Scanner sc = new Scanner( System.in );	
+	
+	public static Agence ajoutAgence() {
+		System.out.println( " - AJOUT D'UNE NOUVELLE AGENCE - " );
+		System.out.print('\n'+"Entrer le code de l'agence : " );
+		String code = sc.nextLine();
+		System.out.print('\n'+"Entrer l'adresse de l'agence : " );
+		System.out.print('\n'+ "\t Nom de la rue : " );
+		String addrRue = sc.nextLine();
+		System.out.print('\n'+"\t Numero dans la rue : " );
+		String addrNum = sc.nextLine();
+		System.out.print('\n'+"\t Code postal : " );
+		String addrCPostal = sc.nextLine();
+		System.out.print('\n'+"\t Ville : " );
+		String addrVille = sc.nextLine();
+		Adresse adresse = new Adresse(addrNum, addrRue, addrVille, addrCPostal);
+		Agence agence = new Agence(code, 0, adresse);
+		return agence;
+	}
+	
+	
+	
+	
 	public static void main(String[] args) {
 		int response;
 		boolean first = true;
@@ -69,29 +91,6 @@ public class SegaBank {
 			// TO DO quitter
 			break;
 		}
-		
-		
 	}
-
-	public static Agence ajoutAgence() {
-		System.out.println( " - AJOUT D'UNE NOUVELLE AGENCE - " );
-		System.out.println( "Entrer un ID : " );
-		int id = sc.nextInt();
-		System.out.println( "Entrer le code de l'agence : " );
-		String code = sc.next();
-		System.out.println( "Entrer l'adresse de l'agence : " );
-		System.out.println( "	Nom de la rue : " );
-		String addrRue = sc.next();
-		System.out.println( "	Numéro dans la rue : " );
-		String addrNum = sc.next();
-		System.out.println( "	Code postal : " );
-		String addrCPostal = sc.next();
-		System.out.println( "	Ville : " );
-		String addrVille = sc.next();
-		Adresse adresse = new Adresse(addrNum, addrRue, addrVille, addrCPostal);
-		Agence agence = new Agence(code, id, adresse);
-		return agence;
-	}
-	
 
 }
