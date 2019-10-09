@@ -5,8 +5,8 @@ import exceptions.SoldeNegatifException;
 public class ComptePayant extends Compte{
 	
 	
-	public ComptePayant(String indentifiant, double solde, Agence agence) {
-		super(indentifiant, solde, agence);
+	public ComptePayant(int indentifiant, double solde, int id_agence) {
+		super(indentifiant, solde, id_agence);
 		// TODO Auto-generated constructor stub
 	}
 

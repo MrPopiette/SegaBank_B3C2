@@ -5,8 +5,8 @@ import exceptions.DecouvertDepasseException;
 public class CompteSimple extends Compte{
 	private double decouvert;
 	
-	public CompteSimple(String indentifiant, double solde, double decouvert, Agence agence) {
-		super(indentifiant, solde, agence);
+	public CompteSimple(int indentifiant, double solde, double decouvert, int id_agence) {
+		super(indentifiant, solde, id_agence);
 		this.decouvert = decouvert;
 	}
 
@@ -20,5 +20,9 @@ public class CompteSimple extends Compte{
 	@Override
 	public String toString() {
 		return "CompteSimple [decouvert=" + decouvert + ", indentifiant=" + indentifiant + ", solde=" + solde + "]";
+	}
+
+	public double getDecouvert() {
+		return decouvert;
 	}
 }

@@ -5,9 +5,13 @@ public class CompteEpargne extends Compte{
 	
 	private double tauxInteret;
 	
-	public CompteEpargne(String indentifiant, double solde, double tauxInteret, Agence agence) {
-		super(indentifiant, solde, agence);
+	public CompteEpargne(int indentifiant, double solde, double tauxInteret, int id_agence) {
+		super(indentifiant, solde, id_agence);
 		this.tauxInteret = tauxInteret;
+	}
+
+	public double getTauxInteret() {
+		return tauxInteret;
 	}
 
 	private void calculInteret() {

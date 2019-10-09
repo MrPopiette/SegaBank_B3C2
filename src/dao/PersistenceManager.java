@@ -24,7 +24,7 @@ public class PersistenceManager {
 				props.load(fis);
 			}
 
-			String driverClass = "jdbc:mariadb://localhost:3306/JavaFond?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC";
+			String driverClass = "org.mariadb.jdbc.Driver";
 			String dbURL = props.getProperty("DB_URL");
 			String dbLogin = props.getProperty("DB_LOGIN");
 			String dbPWD = props.getProperty("DB_PASSWORD");
