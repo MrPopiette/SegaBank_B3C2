@@ -26,7 +26,7 @@ public abstract class Compte {
 		return id_agence;
 	}
 
-	public void setIndentifiant(int indentifiant) {
+	public void setIdentifiant(int indentifiant) {
 		this.identifiant = indentifiant;
 	}
 
