@@ -33,7 +33,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 		if ( connection != null ) {
 			try ( PreparedStatement ps = connection
 					.prepareStatement( INSERT_QUERY, Statement.RETURN_GENERATED_KEYS ) ) {
-				ps.setInt( 1, compte.getIndentifiant() );
+				ps.setInt( 1, compte.getIdentifiant() );
 				ps.setDouble( 2, compte.getSolde() );
 				
 				if(compte.getClass().toString().equals("CompteEpargne"))
@@ -82,7 +82,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 				else
 					ps.setDouble( 5, 0 );
 				
-				ps.setInt( 6, compte.getIndentifiant() );
+				ps.setInt( 6, compte.getIdentifiant() );
 				ps.executeUpdate();
 			}
 		}
@@ -95,7 +95,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 		Connection connection = PersistenceManager.getConnection();
 		if ( connection != null ) {
 			try ( PreparedStatement ps = connection.prepareStatement( REMOVE_QUERY ) ) {
-				ps.setInt( 1, compte.getIndentifiant() );
+				ps.setInt( 1, compte.getIdentifiant() );
 				ps.executeUpdate();
 			}
 		}
