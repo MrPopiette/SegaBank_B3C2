@@ -22,19 +22,37 @@ public class SegaBank {
 		}
 	}
 	
+	private static String InputString() {
+		String response;
+		boolean first = true;
+		do {
+			if ( !first )
+				System.out.println( "Entrée invalide... merci de recommencer !" );
+			try {
+				response = sc.next();
+			} catch ( InputMismatchException e ) {
+				response = null;
+			} finally {
+				sc.nextLine();
+			}
+			first = false;
+		}while(response == null || response == "");
+		return response;
+	}
+
 	private static Agence ajoutAgence() {
 		System.out.println( " - AJOUT D'UNE NOUVELLE AGENCE - " );
 		System.out.print('\n'+"Entrer le code de l'agence : " );
-		String code = sc.nextLine();
+		String code = InputString();
 		System.out.print('\n'+"Entrer l'adresse de l'agence : " );
 		System.out.print('\n'+ "\t Nom de la rue : " );
-		String addrRue = sc.nextLine();
+		String addrRue = InputString();
 		System.out.print('\n'+"\t Numero dans la rue : " );
-		String addrNum = sc.nextLine();
+		String addrNum = InputString();
 		System.out.print('\n'+"\t Code postal : " );
-		String addrCPostal = sc.nextLine();
+		String addrCPostal = InputString();
 		System.out.print('\n'+"\t Ville : " );
-		String addrVille = sc.nextLine();
+		String addrVille = InputString();
 		Adresse adresse = new Adresse(addrNum, addrRue, addrVille, addrCPostal);
 		Agence agence = new Agence(code, 0, adresse);
 		
