@@ -1,18 +1,28 @@
 package bo;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import dao.AgenceDAO;
 import tools.ConsoleMessageCRUD;
 
 public class SegaBank {
 	
 	private static List<Agence> agences=new ArrayList<>();
-	private static Scanner sc = new Scanner( System.in );	
+	private static Scanner sc = new Scanner( System.in );
+	private static AgenceDAO agenceDAO=new AgenceDAO();
 	
-	public static Agence ajoutAgence() {
+	private static void listerAgence() {
+		for(Agence agence : agences ) {
+			System.out.println(agence.toString());
+		}
+	}
+	
+	private static Agence ajoutAgence() {
 		System.out.println( " - AJOUT D'UNE NOUVELLE AGENCE - " );
 		System.out.print('\n'+"Entrer le code de l'agence : " );
 		String code = sc.nextLine();
@@ -27,9 +37,17 @@ public class SegaBank {
 		String addrVille = sc.nextLine();
 		Adresse adresse = new Adresse(addrNum, addrRue, addrVille, addrCPostal);
 		Agence agence = new Agence(code, 0, adresse);
+		
+		try {
+			agenceDAO.create(agence);
+		} catch (ClassNotFoundException | SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		agences.add(agence);
 		return agence;
 	}
-	
 	
 	
 	
@@ -66,6 +84,7 @@ public class SegaBank {
 			break;
 		case 4:
 			// TO DO lister les agences
+			listerAgence();
 			break;
 		case 5:
 			// TO DO sauvegarder votre liste d'agence

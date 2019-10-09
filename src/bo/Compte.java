@@ -4,17 +4,18 @@ import exceptions.DecouvertDepasseException;
 import exceptions.SoldeNegatifException;
 
 public abstract class Compte {
-	protected int indentifiant;
+	protected int identifiant;
 	protected double solde;
 	protected int id_agence;
+	
 	public Compte(int indentifiant, double solde, int id_agence) {
 		this.id_agence=id_agence;
-		this.indentifiant = indentifiant;
+		this.identifiant = indentifiant;
 		this.solde = solde;
 	}
 
-	public int getIndentifiant() {
-		return indentifiant;
+	public int getIdentifiant() {
+		return identifiant;
 	}
 
 	public double getSolde() {
@@ -26,7 +27,7 @@ public abstract class Compte {
 	}
 
 	public void setIndentifiant(int indentifiant) {
-		this.indentifiant = indentifiant;
+		this.identifiant = indentifiant;
 	}
 
 	public void versement(double montant) {
@@ -41,7 +42,7 @@ public abstract class Compte {
 	
 	@Override
 	public String toString() {
-		return "Compte [indentifiant=" + indentifiant + ", solde=" + solde + "]";
+		return "Compte [indentifiant=" + identifiant + ", solde=" + solde + "]";
 	}
 	
 	

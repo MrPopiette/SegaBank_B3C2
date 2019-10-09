@@ -19,7 +19,7 @@ public class CompteSimple extends Compte{
 
 	@Override
 	public String toString() {
-		return "CompteSimple [decouvert=" + decouvert + ", indentifiant=" + indentifiant + ", solde=" + solde + "]";
+		return "CompteSimple [decouvert=" + decouvert + ", indentifiant=" + identifiant + ", solde=" + solde + "]";
 	}
 
 	public double getDecouvert() {
