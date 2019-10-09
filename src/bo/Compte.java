@@ -8,9 +8,9 @@ public abstract class Compte {
 	protected double solde;
 	protected int id_agence;
 	
-	public Compte(int indentifiant, double solde, int id_agence) {
+	public Compte(int identifiant, double solde, int id_agence) {
 		this.id_agence=id_agence;
-		this.identifiant = indentifiant;
+		this.identifiant = identifiant;
 		this.solde = solde;
 	}
 
