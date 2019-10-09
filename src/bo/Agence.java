@@ -30,6 +30,10 @@ public class Agence {
 		this.adresse = adresse;
 	}
 	
+	@Override
+	public String toString() {
+		return "Agence [code=" + code + ", id=" + id + ", adresse=" + adresse + ", comptes=" + comptes + "]";
+	}
 	public List<Compte> getCompte() {
 		return comptes;
 	}

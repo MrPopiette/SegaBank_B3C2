@@ -29,6 +29,13 @@ public class PersistenceManager {
 			String dbLogin = props.getProperty("DB_LOGIN");
 			String dbPWD = props.getProperty("DB_PASSWORD");
 
+			
+			
+			dbURL="jdbc:mariadb://localhost:3306/SegaBank?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC";
+			dbLogin="admin";
+			dbPWD="patate";
+				
+					
 			Class.forName(driverClass);
 			connection = DriverManager.getConnection(dbURL, dbLogin, dbPWD);
 		}

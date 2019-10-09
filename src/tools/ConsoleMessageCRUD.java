@@ -4,6 +4,11 @@ public class ConsoleMessageCRUD {
 
 	public ConsoleMessageCRUD() {
 				
+		
+		
+	}
+	
+	public static void menuCRUD() {
 		System.out.println( "======================================" );
 		System.out.println( "================ MENU ================" );
 		System.out.println( "1 - Ajouter une nouvelle agence" );
@@ -18,7 +23,6 @@ public class ConsoleMessageCRUD {
 		System.out.println( "10 - Sauvegarder l'etat des comptes" );
 		System.out.println( "11 - Quitter" );
 		System.out.print( "\t\tEntrez votre choix : " );
-		
 	}
 	
 	

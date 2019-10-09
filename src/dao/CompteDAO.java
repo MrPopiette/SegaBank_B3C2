@@ -53,7 +53,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 				ps.executeUpdate();
 				try ( ResultSet rs = ps.getGeneratedKeys() ) {
 					if ( rs.next() ) {
-						compte.setIndentifiant( rs.getInt( 1 ) );
+						compte.setIdentifiant( rs.getInt( 1 ) );
 					}
 				}
 			}
