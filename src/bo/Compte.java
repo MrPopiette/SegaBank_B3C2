@@ -21,8 +21,8 @@ public abstract class Compte {
 		return solde;
 	}
 
-	public Agence getAgence() {
-		return agence;
+	public int getAgence() {
+		return id_agence;
 	}
 
 	public void setIndentifiant(int indentifiant) {
