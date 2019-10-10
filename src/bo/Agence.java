@@ -33,6 +33,10 @@ public class Agence {
 	public Adresse getAdresse() {
 		return adresse;
 	}
+	public void setComptes(List<Compte> comptes) {
+		this.comptes = comptes;
+	}
+
 	public List<Compte> getComptes() {
 		return comptes;
 	}
@@ -54,6 +58,10 @@ public class Agence {
 	}
 	public void setId(int int1) {
 		this.id=int1;
+	}
+
+	public void removeCompte(Compte delCompte) {
+		comptes.remove(delCompte);
 	}
 	
 	

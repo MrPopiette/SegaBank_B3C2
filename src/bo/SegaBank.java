@@ -33,14 +33,15 @@ public class SegaBank {
 			return compte;
 		}
 		
-		try {
-			compte=compteDAO.findById(id);
-		} catch (ClassNotFoundException | SQLException | IOException | TypeCompteInvalidException e) {
-			//e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-		if(compte==null)
+		for(Compte unCompte:comptes)
+			if(unCompte.getIdentifiant()==id)
+				compte=unCompte;
+		
+		if(compte==null) {
+			System.out.println("--- Il n'existe pas de compte avec cet id ---");
 			return compte;
+		}
+		
 		boolean fini=false;
 		do {
 			ConsoleMessageCRUD.menuCRUDModifierCompte(compte);
@@ -56,48 +57,26 @@ public class SegaBank {
 			case 1:
 				System.out.println("Saisir le nouveau solde :");
 				compte.setSolde(sc.nextDouble());
-				try {
-					compteDAO.update(compte);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
 				break;
 			case 2:
 				System.out.println("Saisir l'id de la nouvelle agence proprietaire : ");
-				
-				Agence agence=null;
-				int id_agence=sc.nextInt();
-				try {
-					agence=agenceDAO.findById((long) id_agence);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
-				if(agence==null) {
-					System.out.println("Cette agence n'existe pas");
-					return null;
-				}
-				//Suppresion du compte dans l'ancienne agence
-				Compte delCompte=null;
-				for(Agence tmpAgence:agences){
-					if(tmpAgence.getId()==compte.getAgence())
-						for(Compte tmpCompte:tmpAgence.getComptes())
-							if(tmpCompte.getIdentifiant()==compte.getIdentifiant())
-								delCompte=tmpCompte;
-					if(delCompte!=null)
-						tmpAgence.getComptes().remove(delCompte);
-				}
-				
-				//Ajout du compte dans la nouvelle agence
-				for(Agence tmpAgence:agences)
-					if(tmpAgence.getId()==id_agence)
-						tmpAgence.addCompte(compte);
-				
-				compte.setId_agence(id_agence);
-				
-				try {
-					compteDAO.update(compte);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
+				{
+					Agence agence=null;
+					int idAgence=sc.nextInt();
+					for(Agence uneAgence:agences)
+						if(uneAgence.getId()==idAgence)
+							agence=uneAgence;
+					
+					if(agence==null) {
+						System.out.println("Cette agence n'existe pas");
+						return null;
+					}
+					for(Agence uneAgence:agences)
+						if(uneAgence.getId()==compte.getAgence())
+							uneAgence.removeCompte(compte);
+					compte.setId_agence(idAgence);
+					
+					agence.addCompte(compte);
 				}
 				break;
 			case 3:
@@ -115,24 +94,46 @@ public class SegaBank {
 				Double tauxInteret;
 				Double decouvert;
 				if(typeCompte==1) {
+					
 					System.out.print('\n'+"Choisir le decouvert max (mettre le nombre en negatif)");
 					decouvert=sc.nextDouble();
 					compte=new CompteSimple(compte.getIdentifiant(),compte.getSolde(), decouvert, (int) compte.getAgence());
+					
 				}else if(typeCompte==2) {
+					
 					compte=new ComptePayant(compte.getIdentifiant(),compte.getSolde(), (int) compte.getAgence());
+					
 				}else if(typeCompte==3) {
+					
 					System.out.print('\n'+"Choisir le taux d'interet : ");
 					tauxInteret=sc.nextDouble();
 					compte=new CompteEpargne(compte.getIdentifiant(),compte.getSolde(), tauxInteret, (int) compte.getAgence());
+					
 				}else {
 					System.out.println("/!\\ --- Error type compte invalide --- /!\\");
 					break;
 				}
-				try {
-					compteDAO.update(compte);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
+				{
+				for (Agence uneAgence : agences) {
+					int position = -1;
+					if (uneAgence.getId() == compte.getAgence()) {
+						int index = 0;
+						for (Compte unCompte : uneAgence.getComptes()) {
+							if (unCompte.getIdentifiant() == compte.getIdentifiant())
+								position = index;
+							index++;
+						}
+						if(position!=-1) {
+							List<Compte> listCompte=uneAgence.getComptes();
+							listCompte.set(position, compte);
+							uneAgence.setComptes(listCompte );
+						}
+
+					}
 				}
+			}
+				
+				
 				break;
 			case 4:
 				//modification du decouvert ou taux interet
@@ -146,16 +147,15 @@ public class SegaBank {
 					System.out.println("Operation inconnue");
 					break;
 				}
-					
-				try {
-					compteDAO.update(compte);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
 				break;
 			case 5:
 				fini = true;
 				break;
+			}
+			try {
+				compteDAO.update(compte);
+			} catch (ClassNotFoundException | SQLException | IOException e) {
+				e.printStackTrace();
 			}
 		}while(!fini);
 		return compte;
@@ -195,17 +195,15 @@ public class SegaBank {
 		}
 		if(tmpDelCompte!=null) {
 			comptes.remove(tmpDelCompte);
+			for(Agence tmpAgence:agences)
+				if(tmpAgence.getId()==compte.getAgence())
+					tmpAgence.removeCompte(compte);
 			System.out.println("Le compte a bien ete supprime");
 		}else
 			System.out.println("Ce compte n'existe pas");
 	}
 	
 	private static void listerCompte() {
-		try {
-			comptes=compteDAO.findAll();
-		} catch (ClassNotFoundException | SQLException | IOException | TypeCompteInvalidException e) {
-			e.printStackTrace();
-		}
 		System.out.println("Liste des compte contenus dans la base de donnees : \n");
 		for (Compte compte: comptes) {
 			System.out.println('\t' + compte.toString());
@@ -268,23 +266,17 @@ public class SegaBank {
 		} catch (ClassNotFoundException | SQLException | IOException e) {
 			e.printStackTrace();
 		}
-		int index=0;
-		for(Agence tmpAgence:agences) {
-			if(tmpAgence.getId()==idAgence)
-				agences.get(index).addCompte(compte);
-			index++;
-		}
+		
+		// TODO verifier si sa marche
+		for(Agence uneAgence:agences)
+			if(uneAgence.getId()==idAgence)
+				uneAgence.addCompte(compte);
 		
 		return compte;
 	}
 
 
 	private static void listerAgence() {
-		try {
-			agences=agenceDAO.findAll();
-		} catch (ClassNotFoundException | SQLException | IOException e) {
-			e.printStackTrace();
-		}
 		System.out.println("Liste des agences contenues dans la base de donnees : \n");
 		for (Agence agence : agences) {
 			System.out.println('\t' + agence.toString());
@@ -330,13 +322,15 @@ public class SegaBank {
 			return agence;
 		}
 		
-		try {
-			agence=agenceDAO.findById(id);
-		} catch (ClassNotFoundException | SQLException | IOException e) {
-			e.printStackTrace();
-		}
-		if(agence==null)
+		for(Agence uneAgence:agences)
+			if(uneAgence.getId()==id)
+				agence=uneAgence;
+		
+		if(agence==null) {
+			System.out.println("Il n'existe pas d'agence pour cet id");
 			return agence;
+		}
+			
 		boolean fini=false;
 		do {
 			ConsoleMessageCRUD.menuCRUDModifierAgence(agence);
@@ -352,29 +346,14 @@ public class SegaBank {
 			case 1:
 				System.out.println("Saisir le nouveau code :");
 				agence.setCode(sc.nextLine());
-				try {
-					agenceDAO.update(agence);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
 				break;
 			case 2:
 				System.out.println("Saisir le nouveau numero_adresse : ");
 				agence.setAdresse(new Adresse(sc.nextLine(),agence.getAdresse().getIntutile(),agence.getAdresse().getNameVille(),agence.getAdresse().getCodepostal()));
-				try {
-					agenceDAO.update(agence);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
 				break;
 			case 3:
 				System.out.println("Saisir la nouvelle adresse : ");
 				agence.setAdresse(new Adresse(agence.getAdresse().getNumero(),sc.nextLine(),agence.getAdresse().getNameVille(),agence.getAdresse().getCodepostal()));
-				try {
-					agenceDAO.update(agence);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
 				break;
 			case 4:
 				String code_postal="";
@@ -384,24 +363,19 @@ public class SegaBank {
 				}while(code_postal.length()!=5);
 				
 				agence.setAdresse(new Adresse(agence.getAdresse().getNumero(),agence.getAdresse().getIntutile(),agence.getAdresse().getNameVille(),code_postal));
-				try {
-					agenceDAO.update(agence);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
 				break;
 			case 5:
 				System.out.println("Saisir la nouvelle ville : ");
 				agence.setAdresse(new Adresse(agence.getAdresse().getNumero(),agence.getAdresse().getIntutile(),sc.nextLine(),agence.getAdresse().getCodepostal()));
-				try {
-					agenceDAO.update(agence);
-				} catch (ClassNotFoundException | SQLException | IOException e) {
-					e.printStackTrace();
-				}
 				break;
 			case 6:
 				fini = true;
 				break;
+			}
+			try {
+				agenceDAO.update(agence);
+			} catch (ClassNotFoundException | SQLException | IOException e) {
+				e.printStackTrace();
 			}
 			
 		}while(!fini);
@@ -442,11 +416,19 @@ public class SegaBank {
 		}
 		if(tmpDelAgence!=null) {
 			agences.remove(tmpDelAgence);
-			System.out.println("L'agence a bien ete supprimee");
+			comptes.removeAll(tmpDelAgence.getComptes());
+			for(Compte unCompte:tmpDelAgence.getComptes())
+				try {
+					compteDAO.remove(unCompte);
+				} catch (ClassNotFoundException | SQLException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			System.out.println("L'agence et ces comptes ont bien ete supprimes");
 		}else
 			System.out.println("Cette agence n'existe pas");
-		
-		
+
+
 	}
 
 	public static void main(String[] args) {
@@ -462,6 +444,13 @@ public class SegaBank {
 			e1.printStackTrace();
 			System.out.println(e1.getMessage());
 		}
+		
+		for(Compte unCompte:comptes)
+			for(Agence uneAgence:agences) 
+				if(unCompte.getAgence()==uneAgence.getId())
+					uneAgence.addCompte(unCompte);
+			
+		
 		
 		int response; // Permet de stoquer le choix de l utilisateur
 		
