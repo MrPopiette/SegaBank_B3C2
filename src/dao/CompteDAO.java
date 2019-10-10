@@ -69,7 +69,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 			try ( PreparedStatement ps = connection.prepareStatement( UPDATE_QUERY ) ) {
 				ps.setDouble( 1, compte.getSolde() );
 				
-				if(compte.getClass().toString().equals("CompteEpargne"))
+				if(compte.getClass().getSimpleName().toString().equals("CompteEpargne"))
 					ps.setDouble( 2, ((CompteEpargne) compte).getTauxInteret() );
 				else
 					ps.setDouble( 2, 0 );
@@ -77,7 +77,7 @@ public class CompteDAO implements IDAO<Long, Compte>{
 				ps.setString( 3, compte.getClass().getSimpleName() );
 				ps.setInt( 4, compte.getAgence());
 				
-				if(compte.getClass().toString().equals("CompteSimple"))
+				if(compte.getClass().getSimpleName().toString().equals("CompteSimple"))
 					ps.setDouble( 5, ((CompteSimple) compte).getDecouvert() );
 				else
 					ps.setDouble( 5, 0 );

@@ -1,6 +1,7 @@
 package tools;
 
 import bo.Agence;
+import bo.Compte;
 
 public class ConsoleMessageCRUD {
 
@@ -36,6 +37,21 @@ public class ConsoleMessageCRUD {
 		System.out.println("\t 4 - code_postal");
 		System.out.println("\t 5 - ville");
 		System.out.println("\t 6 - sauvegarder");
+	}
+
+	public static void menuCRUDModifierCompte(Compte compte) {
+		System.out.println("Information sur le compte : " + compte.toString());
+		System.out.println("Choisir la ligne a modifier");
+		System.out.println("\t 1 - Solde");
+		System.out.println("\t 2 - Agence proprietaire");
+		System.out.println("\t 3 - Type de compte");
+		if(compte.getClass().getSimpleName().equals("CompteSimple"))
+			System.out.println("\t 4 - Decouvert");
+		else if(compte.getClass().getSimpleName().equals("CompteEpargne"))
+			System.out.println("\t 4 - Taux d'interet");
+		else
+			System.out.println("\t 4 - ---------------");
+		System.out.println("\t 5 - sauvegarder");
 	}
 	
 	

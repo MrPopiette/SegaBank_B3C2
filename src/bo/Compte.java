@@ -26,6 +26,12 @@ public abstract class Compte {
 		return solde;
 	}
 
+	public void setSolde(double solde) {
+		this.solde = solde;
+	}
+	public void setId_agence(int id_agence) {
+		this.id_agence = id_agence;
+	}
 	public int getAgence() {
 		return id_agence;
 	}

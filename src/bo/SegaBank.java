@@ -20,6 +20,111 @@ public class SegaBank {
 	private static AgenceDAO agenceDAO = new AgenceDAO();
 	private static CompteDAO compteDAO = new CompteDAO();
 	
+	private static Compte modifierCompte() {
+		System.out.println(" - MODIFICATION D'UN COMPTE - ");
+		System.out.print('\n'+"Entrer l'identifiant du compte a modifier :");
+		long id;
+		Compte compte=null;
+		try {
+			id = sc.nextLong();
+		} catch (InputMismatchException e) {
+			System.out.println("/!\\ --- identifiant incorrect ---  /!\\");
+			return compte;
+		}
+		
+		try {
+			compte=compteDAO.findById(id);
+		} catch (ClassNotFoundException | SQLException | IOException | TypeCompteInvalidException e) {
+			//e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		if(compte==null)
+			return compte;
+		boolean fini=false;
+		do {
+			ConsoleMessageCRUD.menuCRUDModifierCompte(compte);
+			int response; // Permet de stoquer le choix de l utilisateur
+			try {
+				response = sc.nextInt();
+			} catch (InputMismatchException e) {
+				response = -1;
+			} finally {
+				sc.nextLine();
+			}
+			switch (response) {
+			case 1:
+				System.out.println("Saisir le nouveau solde :");
+				compte.setSolde(sc.nextDouble());
+				try {
+					compteDAO.update(compte);
+				} catch (ClassNotFoundException | SQLException | IOException e) {
+					e.printStackTrace();
+				}
+				break;
+			case 2:
+				System.out.println("Saisir l'id de la nouvelle agence proprietaire : ");
+				
+				Agence agence=null;
+				int id_agence=sc.nextInt();
+				try {
+					agence=agenceDAO.findById((long) id_agence);
+				} catch (ClassNotFoundException | SQLException | IOException e) {
+					e.printStackTrace();
+				}
+				if(agence==null) {
+					System.out.println("Cette agence n'existe pas");
+					return null;
+				}
+				// Suppresion du compte dans l'ancienne agence
+				Compte delCompte=null;
+				for(Agence tmpAgence:agences){
+					if(tmpAgence.getId()==compte.getAgence())
+						for(Compte tmpCompte:tmpAgence.getComptes())
+							if(tmpCompte.getIdentifiant()==compte.getIdentifiant())
+								delCompte=tmpCompte;
+					if(delCompte!=null)
+						tmpAgence.getComptes().remove(delCompte);
+				}
+				
+				//Ajout du compte dans la nouvelle agence
+				for(Agence tmpAgence:agences)
+					if(tmpAgence.getId()==id_agence)
+						tmpAgence.addCompte(compte);
+				
+				compte.setId_agence(id_agence);
+				
+				try {
+					compteDAO.update(compte);
+				} catch (ClassNotFoundException | SQLException | IOException e) {
+					e.printStackTrace();
+				}
+				break;
+			case 3:
+				System.out.println("Saisir le nouveau type de compte : ");
+				// TODO choisir le type de compte
+				
+				try {
+					compteDAO.update(compte);
+				} catch (ClassNotFoundException | SQLException | IOException e) {
+					e.printStackTrace();
+				}
+				break;
+			case 4:
+				// TODO modification du decouvert ou taux interet
+				try {
+					compteDAO.update(compte);
+				} catch (ClassNotFoundException | SQLException | IOException e) {
+					e.printStackTrace();
+				}
+				break;
+			case 5:
+				fini = true;
+				break;
+			}
+		}while(!fini);
+		return compte;
+	}
+	
 	private static void supprimerCompte() {
 		System.out.println(" - SUPPRESION D'UN COMPTE - ");
 		System.out.print('\n'+"Entrer l'identifiant du compte a supprimer :");
@@ -35,8 +140,8 @@ public class SegaBank {
 		try {
 			compte=compteDAO.findById(id);
 		} catch (ClassNotFoundException | SQLException | IOException | TypeCompteInvalidException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		if(compte==null) {
 			System.out.println("Ce compte n'existe pas");
@@ -45,7 +150,6 @@ public class SegaBank {
 		try {
 			compteDAO.remove(compte);
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Compte tmpDelCompte=null;
@@ -58,7 +162,6 @@ public class SegaBank {
 			System.out.println("Le compte a bien ete supprime");
 		}else
 			System.out.println("Ce compte n'existe pas");
-		
 	}
 	
 	private static void listerCompte() {
@@ -72,7 +175,6 @@ public class SegaBank {
 			System.out.println('\t' + compte.toString());
 		}
 		System.out.println();
-		
 	}
 	
 	private static Compte ajoutCompte() {
@@ -81,7 +183,6 @@ public class SegaBank {
 		Agence agence=null;
 		System.out.println(" - AJOUT D'UN NOUVEAU COMPTE - ");
 		System.out.print('\n' + "Entrer l'id de l'agence proprietaire du compte : ");
-		
 		
 		try {
 			idAgence = sc.nextLong();
@@ -93,7 +194,6 @@ public class SegaBank {
 		try {
 			agence=agenceDAO.findById(idAgence);
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(agence==null) {
@@ -130,7 +230,6 @@ public class SegaBank {
 		try {
 			compteDAO.create(compte);
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int index=0;
@@ -176,7 +275,6 @@ public class SegaBank {
 		try {
 			agenceDAO.create(agence);
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -199,7 +297,6 @@ public class SegaBank {
 		try {
 			agence=agenceDAO.findById(id);
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(agence==null)
@@ -222,7 +319,6 @@ public class SegaBank {
 				try {
 					agenceDAO.update(agence);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -232,7 +328,6 @@ public class SegaBank {
 				try {
 					agenceDAO.update(agence);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -242,7 +337,6 @@ public class SegaBank {
 				try {
 					agenceDAO.update(agence);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -252,7 +346,6 @@ public class SegaBank {
 				try {
 					agenceDAO.update(agence);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -262,7 +355,6 @@ public class SegaBank {
 				try {
 					agenceDAO.update(agence);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
@@ -291,7 +383,6 @@ public class SegaBank {
 		try {
 			agence=agenceDAO.findById(id);
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(agence==null) {
@@ -301,7 +392,6 @@ public class SegaBank {
 		try {
 			agenceDAO.remove(agence);
 		} catch (ClassNotFoundException | SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Agence tmpDelAgence=null;
@@ -347,64 +437,71 @@ public class SegaBank {
 
 			switch (response) {
 			case 1:
-				// TO DO ajouter une nouvelle agence
+				// TODO ajouter une nouvelle agence
 				agence = ajoutAgence();
 				System.out.println("La nouvelle agence a bien ete enregistree dans la base de donnees");
 				System.out.println("Donnee de la nouvelle agence : "+agence.toString());
 				break;
 			case 2:
-				// TO DO modifier une agence existante
+				// TODO modifier une agence existante
 				agence = modifierAgence();
 				if(agence!=null) {
-					System.out.println("Les modifications de l'agence a bien ete enregistree dans la base de donnees");
+					System.out.println("Les modifications de l'agence ont bien et enregistrees dans la base de donnees");
 					System.out.println("Donnee de l'agence : "+agence.toString());
 				}else
 					System.out.println("/!\\ --- Cette agence n'existe pas --- /!\\");
 				break;
 			case 3:
-				// TO DO supprimer une agence existante
+				// TODO supprimer une agence existante
 				supprimerAgence();
 				break;
 			case 4:
-				// TO DO lister les agences
+				// TODO lister les agences
 				listerAgence();
 				break;
 			case 5:
-				// TO DO sauvegarder votre liste d'agence (est gere automatiquement)
+				// TODO sauvegarder votre liste d'agence (est gere automatiquement)
 				System.out.println("--- Sauvegarder ---");
 				break;
 			case 6:
-				// TO DO ajouter un nouveau compte
+				// TODO ajouter un nouveau compte
 				compte=ajoutCompte();
 				if(compte!=null) {
-					System.out.println("Le nouveau compte a bien ete enregistree dans la base de donnees");
+					System.out.println("Le nouveau compte a bien ete enregistre dans la base de donnees");
 					System.out.println("Donnee du nouveau compte : "+compte.toString());
 				}else
 					System.out.println("/!\\ --- Erreur creation du compte impossible --- /!\\");
 				break;
 			case 7:
-				// TO DO modifier un compte existant
-				
+				// TODO modifier un compte existant
+				compte=modifierCompte();
+				if(compte!=null) {
+					System.out.println("Les modifications du compte  bien ete enregistrees dans la base de donnees");
+					System.out.println("Donnee du compte: "+compte.toString());
+				}else
+					System.out.println("/!\\ --- Ce compte n'existe pas --- /!\\");
 				break;
 			case 8:
-				// TO DO supprimer un compte existant
+				// TODO supprimer un compte existant
 				supprimerCompte();
 				break;
 			case 9:
-				// TO DO lister les comptes
+				// TODO lister les comptes
 				listerCompte();
 				break;
 			case 10:
-				// TO DO sauvegarder l'etat des comptes (est gere automatiquement)
+				// TODO sauvegarder l'etat des comptes (est gere automatiquement)
 				System.out.println("--- Sauvegarder ---");
 				break;
 			case 11:
-				// TO DO quitter
+				// TODO quitter
 				System.out.println(" - ARRET DU PROGRAMME - ");
 				run = false;
 
 			}
 		} while (run);
 	}
+
+	
 	
 }
