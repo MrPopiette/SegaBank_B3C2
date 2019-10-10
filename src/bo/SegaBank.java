@@ -93,7 +93,7 @@ public class SegaBank {
 					System.out.print("Choisir le type de compte : ");
 					typeCompte=sc.nextInt();
 				}while(typeCompte < 1 || typeCompte > 3 );
-				
+				comptes.remove(compte);
 				Double tauxInteret;
 				Double decouvert;
 				if(typeCompte==1) {
@@ -116,6 +116,7 @@ public class SegaBank {
 					System.out.println("/!\\ --- Error type compte invalide --- /!\\");
 					break;
 				}
+				
 				{
 				for (Agence uneAgence : agences) {
 					int position = -1;
@@ -130,6 +131,7 @@ public class SegaBank {
 							List<Compte> listCompte=uneAgence.getComptes();
 							listCompte.set(position, compte);
 							uneAgence.setComptes(listCompte );
+							comptes.add(compte);
 						}
 
 					}
