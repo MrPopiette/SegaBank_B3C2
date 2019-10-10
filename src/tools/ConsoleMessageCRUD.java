@@ -25,6 +25,7 @@ public class ConsoleMessageCRUD {
 		System.out.println( "9 - Lister les comptes" );
 		System.out.println( "10 - Sauvegarder l'etat des comptes" );
 		System.out.println( "11 - Quitter" );
+		System.out.println( "12 - Operations bancaires" );
 		System.out.print( "\t\tEntrez votre choix : " );
 	}
 	

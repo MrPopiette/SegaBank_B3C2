@@ -7,13 +7,16 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+
+
 import dao.AgenceDAO;
 import dao.CompteDAO;
+import exceptions.DecouvertDepasseException;
+import exceptions.SoldeNegatifException;
 import exceptions.TypeCompteInvalidException;
 import tools.ConsoleMessageCRUD;
 
 public class SegaBank {
-
 	
 	private static Scanner sc = new Scanner(System.in);
 	private static AgenceDAO agenceDAO = new AgenceDAO();
@@ -271,6 +274,7 @@ public class SegaBank {
 		for(Agence uneAgence:agences)
 			if(uneAgence.getId()==idAgence)
 				uneAgence.addCompte(compte);
+		comptes.add(compte);
 		
 		return compte;
 	}
@@ -472,9 +476,9 @@ public class SegaBank {
 					sc.nextLine();
 				}
 				
-				if (response < 1 || response > 11)
+				if (response < 1 || response > 12)
 					System.out.println("Mauvais choix... merci de recommencer !");
-			} while (response < 1 || response > 11);
+			} while (response < 1 || response > 12);
 
 			switch (response) {
 			case 1:
@@ -538,6 +542,46 @@ public class SegaBank {
 				// TODO quitter
 				System.out.println(" - ARRET DU PROGRAMME - ");
 				run = false;
+				break;
+			case 12:
+				System.out.println("Operation bancaire");
+				System.out.println("Saisir l'identifiant du compte");
+				int id=sc.nextInt();
+				for(Compte unCompte:comptes) {
+					if(unCompte.getIdentifiant()==id) {
+						System.out.println("Info compte "+unCompte.toString());
+						int response2=0;
+						do {
+							System.out.println("Choisir l'operation :");
+							System.out.println("1 - Virement");
+							System.out.println("2 - Retrait");
+							response2=sc.nextInt();
+						}while(response2!=1 && response2!=2);
+						if(response2==1) {
+							System.out.println("Saisir le montant du virement :");
+							Double montant=sc.nextDouble();
+							unCompte.versement(montant);
+						}else if(response2==2) {
+							System.out.println("Saisir le montant du retrait:");
+							Double montant=sc.nextDouble();
+							try {
+								unCompte.retrait(montant);
+							} catch (SoldeNegatifException | DecouvertDepasseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}else
+							System.out.println("Erreur operation inconnue");
+						try {
+							compteDAO.update(unCompte);
+						} catch (ClassNotFoundException | SQLException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+				break;
+				
 
 			}
 		} while (run);
