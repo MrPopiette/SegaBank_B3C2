@@ -27,5 +27,11 @@ public class ComptePayant extends Compte{
 		this.solde-=montant;
 		this.solde-=montant*0.05;
 	}
-
+	@Override
+	public String toString() {
+		return "ComptePayant [identifiant=" + identifiant + ", solde=" + solde + ", id_agence=" + id_agence + "]";
+	}
+	
+	
+	
 }

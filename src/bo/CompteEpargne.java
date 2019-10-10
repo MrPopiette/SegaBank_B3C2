@@ -22,6 +22,9 @@ public class CompteEpargne extends Compte{
 		this.solde=this.solde+this.solde*this.tauxInteret;
 	}
 	
+	public void setTauxInteret(double tauxInteret) {
+		this.tauxInteret = tauxInteret;
+	}
 	@Override
 	public String toString() {
 		return "CompteEpargne [tauxInteret=" + tauxInteret + ", identifiant=" + identifiant + ", solde=" + solde

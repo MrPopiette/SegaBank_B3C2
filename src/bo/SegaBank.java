@@ -14,11 +14,12 @@ import tools.ConsoleMessageCRUD;
 
 public class SegaBank {
 
-	private static List<Agence> agences = new ArrayList<>();
-	private static List<Compte> comptes = new ArrayList<>();
+	
 	private static Scanner sc = new Scanner(System.in);
 	private static AgenceDAO agenceDAO = new AgenceDAO();
 	private static CompteDAO compteDAO = new CompteDAO();
+	private static List<Agence> agences = new ArrayList<>();
+	private static List<Compte> comptes = new ArrayList<>();
 	
 	private static Compte modifierCompte() {
 		System.out.println(" - MODIFICATION D'UN COMPTE - ");
@@ -75,7 +76,7 @@ public class SegaBank {
 					System.out.println("Cette agence n'existe pas");
 					return null;
 				}
-				// Suppresion du compte dans l'ancienne agence
+				//Suppresion du compte dans l'ancienne agence
 				Compte delCompte=null;
 				for(Agence tmpAgence:agences){
 					if(tmpAgence.getId()==compte.getAgence())
@@ -101,8 +102,32 @@ public class SegaBank {
 				break;
 			case 3:
 				System.out.println("Saisir le nouveau type de compte : ");
-				// TODO choisir le type de compte
+				//Changer le type de compte
+				int typeCompte=0;
+				do {
+					System.out.println("1 - Compte simple");
+					System.out.println("2 - Compte Payant");
+					System.out.println("3 - Compte Epargne");
+					System.out.print("Choisir le type de compte : ");
+					typeCompte=sc.nextInt();
+				}while(typeCompte < 1 || typeCompte > 3 );
 				
+				Double tauxInteret;
+				Double decouvert;
+				if(typeCompte==1) {
+					System.out.print('\n'+"Choisir le decouvert max (mettre le nombre en negatif)");
+					decouvert=sc.nextDouble();
+					compte=new CompteSimple(compte.getIdentifiant(),compte.getSolde(), decouvert, (int) compte.getAgence());
+				}else if(typeCompte==2) {
+					compte=new ComptePayant(compte.getIdentifiant(),compte.getSolde(), (int) compte.getAgence());
+				}else if(typeCompte==3) {
+					System.out.print('\n'+"Choisir le taux d'interet : ");
+					tauxInteret=sc.nextDouble();
+					compte=new CompteEpargne(compte.getIdentifiant(),compte.getSolde(), tauxInteret, (int) compte.getAgence());
+				}else {
+					System.out.println("/!\\ --- Error type compte invalide --- /!\\");
+					break;
+				}
 				try {
 					compteDAO.update(compte);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
@@ -110,7 +135,18 @@ public class SegaBank {
 				}
 				break;
 			case 4:
-				// TODO modification du decouvert ou taux interet
+				//modification du decouvert ou taux interet
+				if(compte.getClass().getSimpleName().equals("CompteSimple")) {
+					System.out.println("Saisir le nouveau decouvert (nombre negatif) :");
+					((CompteSimple)compte).setDecouvert(sc.nextDouble());
+				}else if(compte.getClass().getSimpleName().equals("CompteEpargne")) {
+					System.out.println("Saisir le nouveau taux d'interet :");
+					((CompteEpargne)compte).setTauxInteret(sc.nextDouble());
+				}else {
+					System.out.println("Operation inconnue");
+					break;
+				}
+					
 				try {
 					compteDAO.update(compte);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
@@ -341,8 +377,13 @@ public class SegaBank {
 				}
 				break;
 			case 4:
-				System.out.println("Saisir le nouveau code_postal : ");
-				agence.setAdresse(new Adresse(agence.getAdresse().getNumero(),agence.getAdresse().getIntutile(),sc.nextLine(),agence.getAdresse().getCodepostal()));
+				String code_postal="";
+				do {
+					System.out.println("Saisir le nouveau code_postal (5 chiffres): ");
+					code_postal=sc.nextLine();
+				}while(code_postal.length()!=5);
+				
+				agence.setAdresse(new Adresse(agence.getAdresse().getNumero(),agence.getAdresse().getIntutile(),agence.getAdresse().getNameVille(),code_postal));
 				try {
 					agenceDAO.update(agence);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
@@ -351,7 +392,7 @@ public class SegaBank {
 				break;
 			case 5:
 				System.out.println("Saisir la nouvelle ville : ");
-				agence.setAdresse(new Adresse(agence.getAdresse().getNumero(),agence.getAdresse().getIntutile(),agence.getAdresse().getNameVille(),sc.nextLine()));
+				agence.setAdresse(new Adresse(agence.getAdresse().getNumero(),agence.getAdresse().getIntutile(),sc.nextLine(),agence.getAdresse().getCodepostal()));
 				try {
 					agenceDAO.update(agence);
 				} catch (ClassNotFoundException | SQLException | IOException e) {
@@ -409,7 +450,18 @@ public class SegaBank {
 	}
 
 	public static void main(String[] args) {
-		
+		try {
+			comptes=compteDAO.findAll();
+		} catch (ClassNotFoundException | SQLException | IOException | TypeCompteInvalidException e1) {
+			e1.printStackTrace();
+			System.out.println(e1.getMessage());
+		}
+		try {
+			agences=agenceDAO.findAll();
+		} catch (ClassNotFoundException | SQLException | IOException e1) {
+			e1.printStackTrace();
+			System.out.println(e1.getMessage());
+		}
 		
 		int response; // Permet de stoquer le choix de l utilisateur
 		
@@ -479,7 +531,7 @@ public class SegaBank {
 					System.out.println("Les modifications du compte  bien ete enregistrees dans la base de donnees");
 					System.out.println("Donnee du compte: "+compte.toString());
 				}else
-					System.out.println("/!\\ --- Ce compte n'existe pas --- /!\\");
+					System.out.println("/!\\ --- Abandon de l'operation : le compte ou l'agence n'existe pas --- /!\\");
 				break;
 			case 8:
 				// TODO supprimer un compte existant

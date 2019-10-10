@@ -12,7 +12,7 @@ create or replace table Agence(
 	code varchar(50) NOT NULL,
 	numero_adresse varchar(10) NULL,
 	adresse varchar(50) NULL,
-	code_postal varchar(6) NULL,
+	code_postal varchar(5) NULL,
 	ville varchar(50) NULL
 );
 
