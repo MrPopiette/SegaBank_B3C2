@@ -1,10 +1,16 @@
 package dao;
 
+import com.sun.source.tree.ArrayAccessTree;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 public class PersistenceManager {
@@ -36,7 +42,12 @@ public class PersistenceManager {
 			dbPWD="patate";
 				
 					
-			Class.forName(driverClass);
+			//Class.forName(driverClass);
+
+			Enumeration<Driver> drivers= DriverManager.getDrivers();
+			while (drivers.hasMoreElements()){
+				System.out.println(drivers.nextElement().getClass().getName());
+			}
 			connection = DriverManager.getConnection(dbURL, dbLogin, dbPWD);
 		}
 		return connection;
