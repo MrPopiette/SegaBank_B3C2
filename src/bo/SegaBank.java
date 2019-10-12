@@ -2,11 +2,13 @@ package bo;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-
 
 import dao.AgenceDAO;
 import dao.CompteDAO;
@@ -14,14 +16,20 @@ import exceptions.DecouvertDepasseException;
 import exceptions.SoldeNegatifException;
 import exceptions.TypeCompteInvalidException;
 import tools.ConsoleMessageCRUD;
+import tools.SaveAsCSV;
+
 
 public class SegaBank {
 	
 	private static Scanner sc = new Scanner(System.in);
+	private static SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	private static AgenceDAO agenceDAO = new AgenceDAO();
 	private static CompteDAO compteDAO = new CompteDAO();
 	private static List<Agence> agences = new ArrayList<>();
 	private static List<Compte> comptes = new ArrayList<>();
+	private static List<String> listTitleNameCSV = List.of("Type Operation", "Date","IdAgence", "IdCompte", "Montant", "CompteStatus");
+	//private static List<List<String>> listOperationCSV = Arrays.asList();
+	private static List<List<String>> listOperationCSV = new ArrayList<>();
 	
 	private static Compte modifierCompte() {
 		System.out.println(" - MODIFICATION D'UN COMPTE - ");
@@ -437,6 +445,9 @@ public class SegaBank {
 	}
 
 	public static void main(String[] args) {
+		
+		
+		
 		try {
 			comptes=compteDAO.findAll();
 		} catch (ClassNotFoundException | SQLException | IOException | TypeCompteInvalidException e1) {
@@ -477,9 +488,9 @@ public class SegaBank {
 					sc.nextLine();
 				}
 				
-				if (response < 1 || response > 12)
+				if (response < 1 || response > 13)
 					System.out.println("Mauvais choix... merci de recommencer !");
-			} while (response < 1 || response > 12);
+			} while (response < 1 || response > 13);
 
 			switch (response) {
 			case 1:
@@ -515,6 +526,7 @@ public class SegaBank {
 				if(compte!=null) {
 					System.out.println("Le nouveau compte a bien ete enregistre dans la base de donnees");
 					System.out.println("Donnee du nouveau compte : "+compte.toString());
+					listOperationCSV.add(Arrays.asList("Creation Compte",formatter.format(new Date()).toString(),new Integer(compte.getAgence()).toString(),new Integer(compte.getIdentifiant()).toString(),"",compte.toString()));
 				}else
 					System.out.println("/!\\ --- Erreur creation du compte impossible --- /!\\");
 				break;
@@ -562,15 +574,17 @@ public class SegaBank {
 							System.out.println("Saisir le montant du virement :");
 							Double montant=sc.nextDouble();
 							unCompte.versement(montant);
+							listOperationCSV.add(Arrays.asList("Versement",formatter.format(new Date()).toString(),new Integer(unCompte.getAgence()).toString(),new Integer(unCompte.getIdentifiant()).toString(),montant.toString(),unCompte.toString()));
 						}else if(response2==2) {
 							System.out.println("Saisir le montant du retrait:");
 							Double montant=sc.nextDouble();
 							try {
-								unCompte.retrait(montant);
+								unCompte.retrait(montant);								
 							} catch (SoldeNegatifException | DecouvertDepasseException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							listOperationCSV.add(Arrays.asList("Retrait",formatter.format(new Date()).toString(),new Integer(unCompte.getAgence()).toString(),new Integer(unCompte.getIdentifiant()).toString(),montant.toString(),unCompte.toString()));
 						}else
 							System.out.println("Erreur operation inconnue");
 						try {
@@ -580,6 +594,14 @@ public class SegaBank {
 							e.printStackTrace();
 						}
 					}
+				}
+				break;
+			case 13:
+				System.out.println("Le fichier CSV a bien ete cree dans le repertoire racine");
+				try {
+					new SaveAsCSV(listTitleNameCSV, listOperationCSV);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 				break;
 				

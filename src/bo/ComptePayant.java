@@ -4,11 +4,21 @@ import exceptions.SoldeNegatifException;
 
 public class ComptePayant extends Compte{
 	
-	
+	/**
+	 * Constructeur avec identifiant unique
+	 * @param identifiant
+	 * @param solde
+	 * @param id_agence
+	 */
 	public ComptePayant(int identifiant, double solde, int id_agence) {
 		super(identifiant, solde, id_agence);
 		// TODO Auto-generated constructor stub
 	}
+	/**
+	 * Constructeur sans identifiant
+	 * @param solde
+	 * @param id_agence
+	 */
 	public ComptePayant( double solde, int id_agence) {
 		super( solde, id_agence);
 		// TODO Auto-generated constructor stub

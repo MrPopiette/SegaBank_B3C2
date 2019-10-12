@@ -21,6 +21,13 @@ public class PersistenceManager {
 	
 	private PersistenceManager(){}//Prevents initialization
 
+	/**
+	 * 
+	 * @return la connexion a la base de donnees
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public static Connection getConnection() throws IOException, ClassNotFoundException, SQLException {
 
 		if (connection == null || !connection.isValid(2)) {
@@ -37,9 +44,9 @@ public class PersistenceManager {
 
 			
 			
-			dbURL="jdbc:mariadb://localhost:3306/SegaBank?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC";
-			dbLogin="admin";
-			dbPWD="patate";
+			//dbURL="jdbc:mariadb://localhost:3306/SegaBank?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC";
+			//dbLogin="admin";
+			//dbPWD="patate";
 				
 					
 			//Class.forName(driverClass);
@@ -53,6 +60,10 @@ public class PersistenceManager {
 		return connection;
 	}
 
+	/**
+	 * Ferme la connexion a las base de donnees
+	 * @throws SQLException
+	 */
 	public static void closeConnection() throws SQLException {
 		if (connection != null && connection.isValid(2)) {
 			connection.close();

@@ -1,0 +1,3 @@
+Type Operation;Date;IdAgence;IdCompte;Montant;CompteStatus;
+Creation Compte;12-10-2019 20:14:52;5;20;;ComptePayant [identifiant=20, solde=5.0, id_agence=5]
+Retrait;12-10-2019 20:15:13;5;20;2.0;ComptePayant [identifiant=20, solde=2.9, id_agence=5]

@@ -10,7 +10,9 @@ public class ConsoleMessageCRUD {
 		
 		
 	}
-	
+	/**
+	 * Affiche dans la console le message du menu principal
+	 */
 	public static void menuCRUD() {
 		System.out.println( "======================================" );
 		System.out.println( "================ MENU ================" );
@@ -26,9 +28,14 @@ public class ConsoleMessageCRUD {
 		System.out.println( "10 - Sauvegarder l'etat des comptes" );
 		System.out.println( "11 - Quitter" );
 		System.out.println( "12 - Operations bancaires" );
+		System.out.println( "13 - Enregister les operations dans un fichier CSV" );
 		System.out.print( "\t\tEntrez votre choix : " );
 	}
 	
+	/**
+	 * Afficher dans la console le message du menu pour les agences
+	 * @param agence
+	 */
 	public static void menuCRUDModifierAgence(Agence agence) {
 		System.out.println("Information sur l'agence : " + agence.toString());
 		System.out.println("Choisir la ligne a modifier");
@@ -39,7 +46,11 @@ public class ConsoleMessageCRUD {
 		System.out.println("\t 5 - ville");
 		System.out.println("\t 6 - sauvegarder");
 	}
-
+	
+	/**
+	 * Affiche dans la console le message du menu des comptes
+	 * @param compte
+	 */
 	public static void menuCRUDModifierCompte(Compte compte) {
 		System.out.println("Information sur le compte : " + compte.toString());
 		System.out.println("Choisir la ligne a modifier");

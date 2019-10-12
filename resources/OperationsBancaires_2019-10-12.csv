@@ -1,0 +1,4 @@
+Type Operation;Date;IdAgence;IdCompte;Montant;CompteStatus;
+Versement;12-10-2019 20:10:21;2;1;12.0;CompteEpargne [tauxInteret=0.03, identifiant=1, solde=8183582.0, id_agence=2]
+Retrait;12-10-2019 20:10:35;2;1;50.0;CompteEpargne [tauxInteret=0.03, identifiant=1, solde=8183532.0, id_agence=2]
+Retrait;12-10-2019 20:10:54;1;18;5.0;CompteEpargne [tauxInteret=0.02, identifiant=18, solde=4.35846995E8, id_agence=1]
