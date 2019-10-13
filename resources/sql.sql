@@ -30,7 +30,7 @@ create table Compte(
 create table Operation(
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	type_operation varchar(20) not null,
-	date varchar(15) not null,
+	date varchar(20) not null,
 	id_agence varchar(20) not null,
 	id_compte varchar(20) not null,
 	montant varchar(20) not null,

@@ -1,0 +1,2 @@
+Type Operation;Date;IdAgence;IdCompte;Montant;CompteStatus;
+Creation Compte;13-10-2019 21:12:34;1;22;;CompteEpargne [tauxInteret=5.8, identifiant=22, solde=8.417408016E8, id_agence=1]
