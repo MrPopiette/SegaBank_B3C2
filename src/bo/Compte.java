@@ -19,6 +19,7 @@ public abstract class Compte {
 		this.identifiant = identifiant;
 		this.solde = solde;
 	}
+	
 	/**
 	 * Constructeur de la classe compte sans l'identifiant
 	 * @param solde

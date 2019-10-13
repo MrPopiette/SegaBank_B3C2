@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import dao.AgenceDAO;
 import dao.CompteDAO;
+import dao.OperationsDAO;
 import exceptions.DecouvertDepasseException;
 import exceptions.SoldeNegatifException;
 import exceptions.TypeCompteInvalidException;
@@ -24,12 +25,13 @@ public class SegaBank {
 	private static Scanner sc = new Scanner(System.in);
 	private static SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	private static AgenceDAO agenceDAO = new AgenceDAO();
+	private static OperationsDAO operationsDAO = new OperationsDAO();
 	private static CompteDAO compteDAO = new CompteDAO();
 	private static List<Agence> agences = new ArrayList<>();
 	private static List<Compte> comptes = new ArrayList<>();
 	private static List<String> listTitleNameCSV = List.of("Type Operation", "Date","IdAgence", "IdCompte", "Montant", "CompteStatus");
 	//private static List<List<String>> listOperationCSV = Arrays.asList();
-	private static List<List<String>> listOperationCSV = new ArrayList<>();
+	private static List<List<String>> listOperationCSV;
 	
 	private static Compte modifierCompte() {
 		System.out.println(" - MODIFICATION D'UN COMPTE - ");
@@ -446,14 +448,13 @@ public class SegaBank {
 
 	public static void main(String[] args) {
 		
-		
-		
 		try {
 			comptes=compteDAO.findAll();
 		} catch (ClassNotFoundException | SQLException | IOException | TypeCompteInvalidException e1) {
 			e1.printStackTrace();
 			System.out.println(e1.getMessage());
 		}
+		
 		try {
 			agences=agenceDAO.findAll();
 		} catch (ClassNotFoundException | SQLException | IOException e1) {
@@ -461,11 +462,16 @@ public class SegaBank {
 			System.out.println(e1.getMessage());
 		}
 		
+		try {
+			listOperationCSV = operationsDAO.findAll();
+		} catch (ClassNotFoundException | SQLException | IOException | TypeCompteInvalidException e1) {
+			System.out.println(e1.getMessage());
+		}
+		
 		for(Compte unCompte:comptes)
 			for(Agence uneAgence:agences) 
 				if(unCompte.getAgence()==uneAgence.getId())
 					uneAgence.addCompte(unCompte);
-			
 		
 		
 		int response; // Permet de stoquer le choix de l utilisateur
@@ -575,6 +581,12 @@ public class SegaBank {
 							Double montant=sc.nextDouble();
 							unCompte.versement(montant);
 							listOperationCSV.add(Arrays.asList("Versement",formatter.format(new Date()).toString(),new Integer(unCompte.getAgence()).toString(),new Integer(unCompte.getIdentifiant()).toString(),montant.toString(),unCompte.toString()));
+							try {
+								operationsDAO.create(Arrays.asList("Versement",formatter.format(new Date()).toString(),new Integer(unCompte.getAgence()).toString(),new Integer(unCompte.getIdentifiant()).toString(),montant.toString(),unCompte.toString()));
+							} catch (ClassNotFoundException | SQLException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}else if(response2==2) {
 							System.out.println("Saisir le montant du retrait:");
 							Double montant=sc.nextDouble();
