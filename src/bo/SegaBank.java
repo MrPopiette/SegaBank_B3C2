@@ -693,8 +693,6 @@ public class SegaBank {
                         for(List<String> operationCompte:listOperationCSV)
                         	if(operationCompte.get(3).equals(idCompteCSV))
                         		listOperationCSVCompte.add(operationCompte);
-                        	
-                		
                 		
                 		System.out.println("Le fichier CSV a bien ete cree dans le repertoire racine");
                         try {
@@ -704,12 +702,7 @@ public class SegaBank {
                         }
                 	}else
                 		System.out.println("Saisie incorrecte");
-                
-                		
-                    
                     break;
-
-
             }
         } while (run);
     }
